@@ -11,7 +11,8 @@ import android.widget.TextView;
 
 public class ResponseAct extends AppCompatActivity {
 
-
+    public static final String PHONE_NUMBER =
+            "com.example.android.twoactivities.extra.REPLY";
     // Class name for Log tag
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     // Unique tag required for the intent extra
@@ -25,6 +26,7 @@ public class ResponseAct extends AppCompatActivity {
     private TextView mReplyHeadTextView;
     // TextView for the reply body
     private TextView mReplyTextView;
+    String phoneNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +58,7 @@ public class ResponseAct extends AppCompatActivity {
             // Test to make sure the intent reply result was good.
             if (resultCode == RESULT_OK) {
                 String reply = data.getStringExtra(ResponseAct2.EXTRA_REPLY);
-
+                phoneNumber = reply;
                 // Make the reply head visible.
                 mReplyHeadTextView.setVisibility(View.VISIBLE);
 
@@ -65,5 +67,49 @@ public class ResponseAct extends AppCompatActivity {
                 mReplyTextView.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    /**
+     *  Working with Different States of the Activity
+     */
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i("MYTAG", "Response Activity 1 onStart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i("MYTAG", "Response Activity 1 onResume");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i("MYTAG", "Response Activity 1 onDestroy");
+
+    }
+    @Override
+    public void onBackPressed() {
+        Log.i("MYTAG", "Response Activity 1 onBackPressed");
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("PHONE_NUMBER", phoneNumber);
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i("MYTAG", "Response Activity 1 onPause");
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i("MYTAG", "Response Activity 1 onStop");
     }
 }

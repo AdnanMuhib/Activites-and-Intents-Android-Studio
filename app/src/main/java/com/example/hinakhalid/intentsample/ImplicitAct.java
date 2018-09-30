@@ -23,8 +23,12 @@ public class ImplicitAct extends AppCompatActivity {
 
         Toast toast = Toast.makeText(this, "starting with implicit", Toast.LENGTH_LONG);
         toast.show();
+        phoneNumber = "";
     }
+
     String yourMessage;
+    String phoneNumber;
+
     public void implicitIntent(View view) {
         final EditText edtText = new EditText(this);
 
@@ -70,5 +74,52 @@ public class ImplicitAct extends AppCompatActivity {
         startActivity(new Intent(ImplicitAct.this, LocationActivity.class));
     }
 
+
+    public void openCall(View view) {
+        //phoneNumber = "tel:03053996778";
+        if (phoneNumber.isEmpty()){
+            final EditText edtText = new EditText(this);
+            edtText.setInputType(3);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Phone");
+            builder.setMessage("Enter Phone Number");
+            builder.setCancelable(true);
+            builder.setView(edtText);
+            builder.setNeutralButton("Call", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    phoneNumber = edtText.getText().toString();
+                }
+            });
+            builder.show();
+        }
+
+        if (phoneNumber.isEmpty()){
+            Toast toast = Toast.makeText(this,"No Phone Number Entered to Make a Call", Toast.LENGTH_LONG);
+            toast.show();
+        }
+        else {
+            phoneNumber = "tel:" + phoneNumber;
+            Intent callIntent = new Intent(Intent.ACTION_CALL);
+            callIntent.setData(Uri.parse(phoneNumber));
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            startActivity(callIntent);
+        }
+    }
+
+    @Override
+    public  void onStart(){
+        super.onStart();
+        phoneNumber = getIntent().getExtras().getString("PHONE_NUMBER");
+    }
 }
 

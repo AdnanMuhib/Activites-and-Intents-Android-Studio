@@ -1,5 +1,6 @@
 package com.example.hinakhalid.intentsample;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,14 +51,28 @@ public class MainActivity extends AppCompatActivity {
 
     public void startActivity2(View view) {
         Intent replyIntent = new Intent(this,ResponseAct.class);
-        startActivity(replyIntent);
-
+        startActivityForResult(replyIntent,1);
     }
 
 
     public void implicitIntent(View view) {
         Intent implIntent = new Intent(this,ImplicitAct.class);
+        implIntent.putExtra("PHONE_NUMBER",phoneNumber);
         startActivity(implIntent);
     }
 
+    String phoneNumber;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case 1:{
+                if (resultCode == RESULT_OK){
+                    phoneNumber = data.getStringExtra("PHONE_NUMBER");
+                }
+            }
+            break;
+        }
+    }
 }

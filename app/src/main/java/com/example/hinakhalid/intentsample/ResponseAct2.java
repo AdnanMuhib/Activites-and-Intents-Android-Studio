@@ -3,6 +3,7 @@ package com.example.hinakhalid.intentsample;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -41,5 +42,37 @@ public class ResponseAct2 extends AppCompatActivity {
         replyIntent.putExtra(EXTRA_REPLY, reply);
         setResult(RESULT_OK, replyIntent);
         finish();
+    }
+    /**
+     *  Working with Different States of the Activity
+     */
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i("MYTAG", "Response Activity 2 onStart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i("MYTAG", "Response Activity 2 onResume");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i("MYTAG", "Response Activity 2 onDestroy");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i("MYTAG", "Response Activity 2 onPause");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i("MYTAG", "Response Activity 2 onStop");
     }
 }
