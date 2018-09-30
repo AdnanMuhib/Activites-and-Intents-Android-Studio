@@ -1,14 +1,17 @@
 package com.example.hinakhalid.intentsample;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class ImplicitAct extends AppCompatActivity {
@@ -21,16 +24,35 @@ public class ImplicitAct extends AppCompatActivity {
         Toast toast = Toast.makeText(this, "starting with implicit", Toast.LENGTH_LONG);
         toast.show();
     }
+    String yourMessage;
     public void implicitIntent(View view) {
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, "My awesome text message!");
-        sendIntent.setType("text/plain");
+        final EditText edtText = new EditText(this);
 
-        // Verify that the intent will resolve to an activity
-        if (sendIntent.resolveActivity(getPackageManager()) != null) {
-            startActivity(sendIntent);
-        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Message");
+        builder.setMessage("Type Your Message");
+        builder.setCancelable(false);
+        builder.setView(edtText);
+        builder.setNeutralButton("Send", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Toast.makeText(getApplicationContext(), "Hello " + edtText.getText() + " ! how are you?", Toast.LENGTH_LONG).show();
+                yourMessage = edtText.getText().toString();
+
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, yourMessage);
+                sendIntent.setType("text/plain");
+
+                // Verify that the intent will resolve to an activity
+                if (sendIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(sendIntent);
+                }
+            }
+        });
+        builder.show();
+
+
     }
 
     public void openMap(View view) {
